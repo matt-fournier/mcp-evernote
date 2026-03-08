@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "@shared/": "./_shared/",
+    "zod": "npm:zod@3",
+    "@modelcontextprotocol/sdk/": "npm:@modelcontextprotocol/sdk/"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}
