@@ -1,23 +1,29 @@
 import { assertEquals } from "https://deno.land/std@0.208.0/assert/mod.ts";
 import { validateApiKey } from "../../_shared/mcp-auth/api-key.ts";
 
-Deno.test("validateApiKey rejects non-mcp_sk_ tokens", () => {
-  const result = validateApiKey("some_random_token");
+Deno.test("validateApiKey returns 500 when MCP_API_KEYS not configured", () => {
+  const original = Deno.env.get("MCP_API_KEYS");
+  Deno.env.delete("MCP_API_KEYS");
+
+  const result = validateApiKey("mcp_sk_anything");
   assertEquals(result.success, false);
   if (!result.success) {
-    assertEquals(result.status, 401);
+    assertEquals(result.status, 500);
   }
+
+  if (original) Deno.env.set("MCP_API_KEYS", original);
 });
 
 Deno.test("validateApiKey rejects unknown mcp_sk_ tokens", () => {
-  // Set env for test
   const original = Deno.env.get("MCP_API_KEYS");
   Deno.env.set("MCP_API_KEYS", "test-client:mcp_sk_validkey123");
 
   const result = validateApiKey("mcp_sk_invalidkey");
   assertEquals(result.success, false);
+  if (!result.success) {
+    assertEquals(result.status, 401);
+  }
 
-  // Restore
   if (original) Deno.env.set("MCP_API_KEYS", original);
   else Deno.env.delete("MCP_API_KEYS");
 });

@@ -5,15 +5,6 @@ export interface AuthIdentity {
   method: "api_key" | "supabase_jwt" | "skip_auth";
 }
 
-export interface AuthResult {
-  success: true;
-  identity: AuthIdentity;
-}
-
-export interface AuthError {
-  success: false;
-  error: string;
-  status: number;
-}
-
-export type AuthOutcome = AuthResult | AuthError;
+export type AuthResult =
+  | { success: true; identity: AuthIdentity }
+  | { success: false; error: string; status: number };
