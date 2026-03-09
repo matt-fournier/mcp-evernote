@@ -1,0 +1,7 @@
+{
+  "name": "mcp-evernote-functions",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1"
+  }
+}

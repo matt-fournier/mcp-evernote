@@ -1,5 +1,2 @@
-[project]
-id = ""
-
 [functions.mcp-evernote]
 verify_jwt = false

@@ -1,9 +1,9 @@
 {
   "imports": {
     "@shared/": "./_shared/",
-    "zod": "npm:zod@3",
-    "@modelcontextprotocol/sdk/": "npm:@modelcontextprotocol/sdk/"
+    "zod": "npm:zod@3"
   },
+  "nodeModulesDir": "auto",
   "compilerOptions": {
     "strict": true
   }

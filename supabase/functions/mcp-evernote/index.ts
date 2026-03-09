@@ -1,4 +1,4 @@
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { authenticate } from "./auth.ts";
 import { createMcpServer } from "./server.ts";
 import { handleCors, getCorsHeaders } from "./cors.ts";
@@ -32,21 +32,14 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const server = createMcpServer(authResult.identity);
 
     // Create transport in stateless mode (no session tracking)
-    const transport = new StreamableHTTPServerTransport({
+    const transport = new WebStandardStreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
     });
 
     await server.connect(transport);
 
-    // Forward the request body to the transport
-    const body = await req.text();
-    const mcpRequest = new Request(req.url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body,
-    });
-
-    const mcpResponse = await transport.handleRequest(mcpRequest);
+    // Handle request using the Web Standard transport (accepts Request, returns Response)
+    const mcpResponse = await transport.handleRequest(req);
 
     // Add CORS headers to the MCP response
     const responseHeaders = new Headers(mcpResponse.headers);
